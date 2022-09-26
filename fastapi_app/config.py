@@ -7,4 +7,4 @@ class Settings(BaseSettings):
     twilio_phone_number: str
 
     class Config:
-        env_file = '.env'
+        env_file = 'fastapi_app/.env'
