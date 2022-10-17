@@ -38,21 +38,17 @@ app = FastAPI()
 @app.post("/send_pin/")
 async def send_messege(body: Body):
     message_ = "Tu código de verificación de FIUBER es: {}".format(body.verification_code)
-    future = await asyncio.get_event_loop().run_in_executor(
+    message_instance = await asyncio.get_event_loop().run_in_executor(
         None, send_whatsapp, body.to_number, message_)
     
-    return future.add_done_callback(callback)
+    return {'status': message_instance.status,
+            'error_code': message_instance.error_code,
+            'error_message': message_instance.error_message}
 
 def send_whatsapp(to_number, body):
     client = Client(settings.twilio_account_sid, settings.twilio_auth_token)
     return client.messages.create(from_="whatsapp:{}".format(settings.twilio_phone_number),
                                   body=body, to="whatsapp:{}".format(to_number))
-
-def callback(future):
-    if future.exception():
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="Error al enviar el mensaje")
-    
-    return future.result()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
