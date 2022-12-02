@@ -11,7 +11,10 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_credentials import admin_credentials
 from id_token import IdTokenMiddleware
+from datadog_event import DatadogEventMiddleware
+from datadog import initialize
 
+initialize(statsd_host="dd-agent", statsd_port=8125)
 firebase_credentials = credentials.Certificate(admin_credentials)
 firebase_admin.initialize_app(firebase_credentials)
 
@@ -31,7 +34,7 @@ app.add_middleware(
 )
 
 app.add_middleware(IdTokenMiddleware)
-
+app.add_middleware(DatadogEventMiddleware)
 
 app = FastAPI()
 
