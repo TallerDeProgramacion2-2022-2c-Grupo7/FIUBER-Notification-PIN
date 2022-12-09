@@ -14,6 +14,7 @@ python-dotenv = "^0.21.0"
 uvicorn = "^0.18.3"
 twilio = "^7.14.1"
 firebase-admin = "^6.0.0"
+datadog = "^0.44.0"
 
 
 [tool.poetry.group.dev.dependencies]
