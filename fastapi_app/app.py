@@ -36,8 +36,6 @@ app.add_middleware(
 app.add_middleware(IdTokenMiddleware)
 app.add_middleware(DatadogEventMiddleware)
 
-app = FastAPI()
-
 @app.post("/send_pin/")
 async def send_messege(body: Body):
     message_ = "Tu código de verificación de FIUBER es: {}".format(body.verification_code)
